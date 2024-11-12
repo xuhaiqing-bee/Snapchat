@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阅后即焚</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .upload-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .preview-container img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+
+        .message {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* 燃烧效果的 CSS */
+        .burn {
+            animation: burn 1s forwards;
+        }
+
+        @keyframes burn {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                transform: scale(1.5);
+            }
+        }
+
+        #imageContainer {
+            position: relative;
+        }
+
+        #burnEffect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 0, 0, 0.5);
+            display: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+<div class="upload-container">
+    <h1>阅后即焚</h1>
+    <form action="/images/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+    <p th:text="${message}" class="message"></p>
+</div>
+
+<div d="imageContainer" class="preview-container" th:if="${imageUrl}">
+    <h2>图片预览</h2>
+    <img th:src="${imageUrl}" alt="上传图片">
+    <div id="burnEffect"></div>
+</div>
+
+<button id="burnButton">阅后即焚</button>
+
+<script>
+    // 点击阅后即焚按钮的事件
+    document.getElementById("burnButton").onclick = function () {
+        const burnEffect = document.getElementById("burnEffect");
+        burnEffect.style.display = "block";  // 显示燃烧效果
+        burnEffect.classList.add("burn");    // 添加燃烧动画效果
+
+        // 延迟后删除图片
+        setTimeout(function () {
+            document.querySelector("img").style.display = "none"; // 隐藏图片
+            burnEffect.style.display = "none";  // 隐藏燃烧效果
+            alert("图片已阅后即焚，无法恢复。");
+        }, 2000); // 1秒后删除
+    };
+
+    // 向服务器发送阅后即焚请求
+    <!--    const imageId = /*[[${imageId}]]*/ 0;-->
+    <!--    fetch(`/burn/${imageId}`, { method: 'POST' })-->
+    <!--        .then(response => {-->
+    <!--            if (response.ok) {-->
+    <!--                response.text().then(msg => {-->
+    <!--                    console.log(msg);-->
+    <!--                    setTimeout(() => {-->
+    <!--                        imageElement.style.display = 'none';-->
+    <!--                        burnButton.style.display = 'none';-->
+    <!--                    }, 2000);   燃烧效果结束后隐藏图片-->
+    <!--                });-->
+    <!--            } else {-->
+    <!--                console.error("Failed to burn image.");-->
+    <!--            }-->
+    <!--        });-->
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+server:
+  port: 8546
+spring:
+  application:
+    name: snapchat
+  datasource:
+    url: jdbc:mysql://localhost:3306/image_sharing_db?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+  web:
+    resources:
+      static-locations: classpath:/static/
